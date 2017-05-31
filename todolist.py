@@ -1,30 +1,71 @@
-# from datetime import datetime
+from datetime import date
+import json
 # BETA
+class MustList:
+	def __init__(self,name):
+		self.name = name
+		self.date = date.today().isoformat()
+		self.check = None
 
+	def return_list(self):
+		return {'date':self.date,'check':self.check,'name':self.name}
 
-class List_Do:
+class Do(MustList):
 	def __init__(self):
 		r_file = open("dolist.txt","r")
-		self.r_list = r_file.readlines()
+		r_string = r_file.readline()
 		r_file.close()
+		if r_string == "":
+			r_string = "{}"
+		self.r_list = json.loads(r_string)
+		self.key = self.r_list.keys()
+		for x in range(len(self.key)):
+			self.r_list[x+1] = self.r_list[str(x+1)]
+			del self.r_list[str(x+1)]
+
+	def list(self):
+		[print(x+1,":",self.r_list[x+1]['name']) for x in range(len(self.r_list))]
 
 	def add(self):
 		work = input("write the work: ")
-		self.r_list.append(work+"\n")
+		while work.replace(" ","") == "":
+			print("no works on here")
+			work = input("write the work: ")
+		dolist = MustList(work)
+		self.r_list[len(self.key)+1] = dolist.return_list()
 
 	def clear(self):
-		[print(x,self.r_list[x],end = '') for x in range(len(self.r_list))]
-		print("check the work")
-		input_number = input("choose the number: ")
-		while input_number.isdigit() == False or int(input_number) > (len(self.r_list)-1) or int(input_number) < 0:
-			print("input again")
+		self.list()
+		if self.r_list == []:
+			print("no list")
+			return
+		else:
+			print("check the work")
+			print("if you exit the clear, press 0")
 			input_number = input("choose the number: ")
-		self.r_list.remove(self.r_list[int(input_number)])
-		print("clearly removed")
+			while input_number.isdigit() == False or int(input_number) > len(self.r_list) or int(input_number) < 0:
+				print("input again")
+				input_number = input("choose the number: ")
+			
+			if int(input_number) == 0:
+				print("ending the clearing")
+				return
+
+			else:
+				checknum,i = len(self.r_list) - int(input_number)+1,0
+				#List's remove code
+				while i < checknum:
+					if len(self.r_list) < int(input_number)+i+1 :
+						del self.r_list[int(input_number)+i]
+					else:
+						self.r_list[int(input_number)+i] = self.r_list[int(input_number)+i+1]
+						del self.r_list[int(input_number)+i+1]
+					i += 1
+				print("clearly removed")
 
 	def update(self):
 		w_file = open("dolist.txt","w")
-		string = "".join(self.r_list)
+		string = json.dumps(self.r_list)
 		w_file.write(string)
 		w_file.close() 
 
