@@ -1,60 +1,97 @@
+from datetime import date
 import random
 import os
+import json
+
 class PickUpTheme:
 	def __init__(self):
-		self.list_theme = ['star','dark','water','fire','wind','earth','moon','sun','light','tree']
-		self.pick_theme = ''
+		self.list_theme = ['dark','water','fire','wind','earth','moon','sun','light','tree']
+		self.theme_pick()
 
-	def theme_pick(self):	
-		random.shuffle(self.list_theme)
-		self.pick_theme = self.list_theme.pop()
-		self.list_theme.append(self.pick_theme)
-		print("You pick the theme: ",self.pick_theme)
+	def theme_pick(self):
+		json_file = open("theme.ini","r")
+		json_string = json_file.readline()
+		json_file.close()
+		if json_string == '':
+			json_string = '{}'
+		json_dict = json.loads(json_string)
+		if 'date' in json_dict and date.today().isoformat() == json_dict["date"]:
+			self.pick_theme = json_dict["theme"]
+
+		else:
+			theme_file = open("theme.ini","w")
+			input("press any key. if you do, you can pick up the TODAY's theme.")
+			self.pick_theme = random.choice(self.list_theme)
+			dict_ = {"date":date.today().isoformat(),"theme":self.pick_theme}
+			dict_string = json.dumps(dict_)
+			theme_file.write(dict_string)
+			theme_file.close()
+			print("select!")
+		print("Your TODAY's theme: ",self.pick_theme)
+
 
 class Item(PickUpTheme):
 	def __init__(self):
 		super().__init__()
+		self.list = []
+		self.item_list()
+		
+
+	def random(self):
+		ran_number = round(random.random(),2) * 100
+		if ran_number < 12:
+			return "1"
+		elif ran_number < 28:
+			return "2"
+		elif ran_number < 48:
+			return "3"
+		elif ran_number < 72:
+			return "4"
+		elif ran_number <= 100:
+			return "5"
+	
+	def add(self):
+		name = input("name? ")
+		while name == '':
+			print("input again")
+			name = input("name? ")
+		des = input("plz description: ")
+		rank = input("rank? ")
+		while rank.isdigit() == 0 or int(rank) <0 or int(rank)>5:
+			print("input again")
+			rank = input("rank? ")
+		dict_item = {'name':name,'des':des,'rank':rank}
+		self.list.append(dict_item)
+
+	def update(self):
+		file = open(self.pick_theme+"_item"+".txt","w")
+		for x in range(len(self.list)):
+			json_f = json.dumps(self.list[x])
+			self.list[x] = json_f
+		string = "\n".join(self.list)
+		file.write(string)
+		file.close()
+
+	# def item_list(self):
+	# 	[print(x) for x in self.list]
+
+	def item_list(self):
+		file = open(self.pick_theme+"_item"+".txt","r")
+		for line in file:
+			line = line.strip("\n")
+			line = json.loads(line)
+			self.list.append(line)
+		file.close()
 
 	def item_pick(self):
-		num = self.list_theme.index(self.pick_theme)
-		# if num == 0:
+		rand = self.random()
+		choice_list = []
+		for x in range(len(self.list)):
+			if self.list[x]["rank"] == rand:
+				choice_list.append(self.list[x])
+		item = random.choice(choice_list)
+		if item == "": print("no item")
+		else :print("you select",item["name"])
 
-		# elif num == 1:
 
-		# elif num == 2:
 
-		# elif num == 3:
-
-		# elif num == 4:
-
-		# elif num == 5:
-
-		# elif num == 6:
-
-		# elif num == 7:
-
-		# elif num == 8:
-
-		# elif num == 9:
-
-		# elif num == 10:
-# read_file = open("item_list.txt","r")
-# have_theme_list = read_file.readline()
-# if have_theme_list != '':
-# 	have_theme_list = have_theme_list.split("/")
-# else:
-# 	have_theme_list = []
-# write_file = open("item_list.txt","w")
-# if have_theme_list == []:
-# 	print("Welcome to the memory world.")
-# 	print("you grow up the flower - to protect the world.")
-# 	print("if you do the work, you can get the item.")
-# 	print("I recommend you don't handle the game, if you can do this.")
-# have_theme_list.append(pick_theme)
-# print("You have this item: ",end = '')
-# [print(x,end = ' ') for x in have_theme_list]
-# print()
-# have_theme = "/".join(have_theme_list)
-# write_file.write(have_theme)
-# write_file.close()
-# read_file.close()
