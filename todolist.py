@@ -54,10 +54,8 @@ class Do(MustList):
 			else:
 				i = 0
 				last = len(self.r_list)
-				print(self.r_list)
 				del self.r_list[int(input_number)]
 				while int(input_number) != last and i+int(input_number) < last:
-					print(self.r_list.keys())
 					self.r_list[int(input_number)+i] = self.r_list[int(input_number)+1+i]
 					if int(input_number)+1+i == last:
 						del self.r_list[last]
