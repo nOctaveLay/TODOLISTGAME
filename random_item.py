@@ -5,8 +5,9 @@ import json
 
 class PickUpTheme:
 	def __init__(self):
-		self.list_theme = ['dark','water','fire','wind','earth','moon','sun','light','tree']
+		self.list_theme = ['dark','water','wind','insect','fruit','light','plant','animal','metal','etc']
 		self.theme_pick()
+		# self.set_theme()
 
 	def theme_pick(self):
 		json_file = open("theme.ini","r")
@@ -29,6 +30,14 @@ class PickUpTheme:
 			print("select!")
 		print("Your TODAY's theme: ",self.pick_theme)
 
+	# temporary method
+	def set_theme(self):
+		print("press the number if you want")
+		num = input("'dark','water','wind','insect','fruit','light','plant','animal','metal','etc' ")
+		while num.isdigit() == 0:
+			print("again")
+			num = input("'dark','water','wind','insect','fruit','light','plant','animal','metal','etc' ")
+		self.pick_theme = self.list_theme[int(num)]
 
 class Item(PickUpTheme):
 	def __init__(self):
@@ -57,11 +66,36 @@ class Item(PickUpTheme):
 			name = input("name? ")
 		des = input("plz description: ")
 		rank = input("rank? ")
-		while rank.isdigit() == 0 or int(rank) <0 or int(rank)>5:
+		while rank.isdigit() == 0 or int(rank) < 0 or int(rank) > 5:
 			print("input again")
 			rank = input("rank? ")
 		dict_item = {'name':name,'des':des,'rank':rank}
 		self.list.append(dict_item)
+
+	def add_small(self):
+		name = input("name? ")
+		while name == '':
+			print("input again")
+			name = input("name? ")
+		des = input("plz description: ")
+		where = input("Where is it?")
+		dict_item = {'name':name,'des':des,'where':where}
+
+
+	def revise(self):
+		num = input("What would you want to change? ")
+		while num.isdigit() == 0 or int(num) < 0 or int(num) > len(self.list):
+			print("again")
+			num = input("What would you want to change? ")
+		change = input("What would you want to change? [name, des, rank] ")
+		while change != 'name' and change != 'des' and change != 'rank':
+			print("input again")
+			change = input("What would you want to change? [name, des, rank] ")
+		input_sig = input("write you want to change ")
+		while change == "rank" and (input_sig.isdigit() == 0 or int(input_sig) > 5 or int(input_sig) < 1 ):
+			print("error")
+			input_sig = input("write you want to change ")
+		self.list[int(num)][change] = input_sig
 
 	def update(self):
 		file = open(self.pick_theme+"_item"+".txt","w")
@@ -72,10 +106,20 @@ class Item(PickUpTheme):
 		file.write(string)
 		file.close()
 
-	# def item_list(self):
-	# 	[print(x) for x in self.list]
+	def show_item_list(self):
+		[print(self.list.index(x),x["name"]) for x in self.list]
+
+	def full_show_item(self):
+		for x in self.list:
+			print(self.list.index(x),x["name"])
+			print(x["des"])
+			print(x["rank"])
+			print()
 
 	def item_list(self):
+		if os.path.exists(self.pick_theme+"_item"+".txt") == 0:
+			file = open(self.pick_theme+"_item"+".txt","w")
+			file.close()
 		file = open(self.pick_theme+"_item"+".txt","r")
 		for line in file:
 			line = line.strip("\n")
