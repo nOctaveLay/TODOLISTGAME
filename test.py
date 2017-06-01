@@ -23,7 +23,9 @@ if __name__ == '__main__':
 		elif int(input_number) == 2:
 			a.clear()
 			a.update()
-			pick.item_pick()
-			
+			choice_item = pick.item_pick()
+			# for x in range()
+			pick.user_add(choice_item)
 		else: #int(input_number) == 0
+			pick.update_user()
 			break
