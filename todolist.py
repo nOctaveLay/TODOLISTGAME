@@ -53,7 +53,11 @@ class Do(MustList):
 
 			else:
 				i = 0
+				file = open("did_do_list.txt","a")
 				last = len(self.r_list)
+				file.write(date.today().isoformat()+" finish ")
+				file.write(self.r_list[int(input_number)]["name"]+"\n")
+				file.close()
 				del self.r_list[int(input_number)]
 				while int(input_number) != last and i+int(input_number) < last:
 					self.r_list[int(input_number)+i] = self.r_list[int(input_number)+1+i]
