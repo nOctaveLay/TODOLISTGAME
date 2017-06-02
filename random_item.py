@@ -42,9 +42,9 @@ class PickUpTheme:
 class Item(PickUpTheme):
 	def __init__(self):
 		super().__init__()
-		self.list = []
-		self.user = []
-		self.item_list(self.pick_theme+"_item"+".txt",self.list)
+		self.list = [] # item's list
+		self.user = [] # user's item
+		self.item_list(os.getcwd()+"/item/"+self.pick_theme+"_item"+".txt",self.list)
 		self.item_list("user.txt",self.user)
 
 	def random(self):
@@ -111,7 +111,7 @@ class Item(PickUpTheme):
 
 	#temp
 	def update(self):
-		file = open(self.pick_theme+"_item"+".txt","w")
+		file = open(os.getcwd()+"/item/"+self.pick_theme+"_item"+".txt","w")
 		for x in range(len(self.list)):
 			json_f = json.dumps(self.list[x])
 			self.list[x] = json_f
@@ -129,10 +129,14 @@ class Item(PickUpTheme):
 		file.write(string)
 		file.close()
 
+	#temp
+	def show_item_list(self,what):
+		[print(what.index(x),x["name"]) for x in what]
 
-	def show_item_list(self):
-		[print(self.list.index(x),x["name"]) for x in self.list]
+	def show_my_item(self):
+		[print(self.user.index(x)+1,x["name"],x["num"]) for x in self.user]
 
+	#temp
 	def full_show_item(self):
 		for x in self.list:
 			print(self.list.index(x),x["name"])
