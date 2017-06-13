@@ -1,15 +1,22 @@
-from todolist import *
+from to_do_list import *
 from random_item import Item
 if __name__ == '__main__':
-	a = Do()
+	do = Do()
 	pick = Item()
-	count,not_clear_list = a.check_date()
-	[(print("You didn't finish <<"+not_clear_list[x]+">>"),pick.user_rm()) for x in range(count)]
+	count,not_clear_list = do.check_date()
+	def print_item():
+		if len(pick.user) == 0:print("no item here") 
+		else:pick.user_rm()
+	[(print("You didn't finish <<"+not_clear_list[x]+">>"),print_item()) for x in range(count)]
+	# else:[(print("You didn't finish <<"+not_clear_list[x]+">>")) for x in range(count)]
+	
+	print()
+	print("<<show item list>>")
 	pick.show_my_item()
 	while True:
 		print()
-		a.list()
-		a.update()
+		do.do_list()
+		do.update()
 		print()
 		print("0 : end")
 		print("1 : list my item")
@@ -24,14 +31,14 @@ if __name__ == '__main__':
 			pick.show_my_item()
 
 		elif int(input_number) == 2:
-			a.add()
-			a.update()
+			do.add_work()
+			do.update()
 			print("successfully add")
 		
 		elif int(input_number) == 3:
-			a.clear_work()
+			do.clear_work()
 			print("misson clear!")
-			a.update()
+			do.update()
 			choice_item = pick.item_pick()
 			pick.user_add(choice_item)
 
