@@ -1,0 +1,2 @@
+{"rank": "5", "des": "\ub545\uc5d0\uc11c \uc798 \uc790\ub77c\ub294 \uc9c0\ub801\uc774", "type": "insect", "name": "\uc9c0\ub801\uc774"}
+{"rank": "1", "des": "\ube44\ub2e8\uc744 \ub9cc\ub4e4\uac8c \ube44\ub2e8 \uaf2c\uce58\ub97c \ub0b4\ub194", "type": "insect", "name": "\ub204\uc5d0"}
