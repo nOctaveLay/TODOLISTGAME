@@ -92,6 +92,14 @@ class Item(PickUpTheme):
 			choice_item["num"] = 1
 			self.user.append(choice_item)
 
+	def user_rm(self):
+		item_name = [x["name"] for x in self.user]
+		pick_item = random.choice(item_name)
+		print("your removing item is",pick_item+"!")
+		where = item_name.index(pick_item)
+		self.user[where]["num"] -= 1
+		if self.user[where]["num"] == 0:
+			self.user.remove(self.user[where])
 
 		#temp
 	def revise(self):
@@ -165,5 +173,4 @@ class Item(PickUpTheme):
 		if item == "": print("no item")
 		else :print("you select",item["name"])
 		return item
-
 
