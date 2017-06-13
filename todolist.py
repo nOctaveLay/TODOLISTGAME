@@ -4,8 +4,7 @@ import json
 class MustList:
 	def __init__(self,name):
 		self.name = name
-		# self.date = date.today().isoformat()
-		self.date = "2012-02-02"
+		self.date = date.today().isoformat()
 		self.check = None
 
 	def return_list(self):
