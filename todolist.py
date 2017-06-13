@@ -1,10 +1,11 @@
-from datetime import date
+from datetime import date , datetime
 import json
 # BETA
 class MustList:
 	def __init__(self,name):
 		self.name = name
-		self.date = date.today().isoformat()
+		# self.date = date.today().isoformat()
+		self.date = "2012-02-02"
 		self.check = None
 
 	def return_list(self):
@@ -24,7 +25,19 @@ class Do(MustList):
 			del self.r_list[str(x+1)]
 
 	def list(self):
+		if len(self.r_list) == 0 : print("<<Today's to do list is empty.>>")
 		[print(x+1,":",self.r_list[x+1]['name']) for x in range(len(self.r_list))]
+
+	def check_date(self):
+		len_list = len(self.r_list)
+		count = 0
+		not_clear_list = []
+		for _ in range(len_list):
+			if self.r_list[1]["date"] != date.today().isoformat():
+				not_clear_list.append(self.r_list[1]["name"])
+				self.clear("not_do_work.txt",1," not finish ")
+				count += 1
+		return (count,not_clear_list)
 
 	def add(self):
 		work = input("write the work: ")
@@ -34,7 +47,23 @@ class Do(MustList):
 		dolist = MustList(work)
 		self.r_list[len(self.key)+1] = dolist.return_list()
 
-	def clear(self):
+#clear the file & all
+	def clear(self,file,input_number,finish):
+		i = 0
+		file = open(file,"a")
+		file.write(datetime.today().replace(microsecond = 0).isoformat().replace("T"," ")+finish)
+		file.write(self.r_list[int(input_number)]["name"]+"\n")
+		file.close()
+		last = len(self.r_list)
+		del self.r_list[int(input_number)]
+		while int(input_number) != last and i+int(input_number) < last:
+			self.r_list[int(input_number)+i] = self.r_list[int(input_number)+1+i]
+			if int(input_number)+1+i == last:
+				del self.r_list[last]
+			i += 1
+
+# You finish the work
+	def clear_work(self):
 		self.list()
 		if self.r_list == []:
 			print("no list")
@@ -50,21 +79,9 @@ class Do(MustList):
 			if int(input_number) == 0:
 				print("ending the clearing")
 				return
-
 			else:
-				i = 0
-				file = open("did_do_list.txt","a")
-				last = len(self.r_list)
-				file.write(date.today().isoformat()+" finish ")
-				file.write(self.r_list[int(input_number)]["name"]+"\n")
-				file.close()
-				del self.r_list[int(input_number)]
-				while int(input_number) != last and i+int(input_number) < last:
-					self.r_list[int(input_number)+i] = self.r_list[int(input_number)+1+i]
-					if int(input_number)+1+i == last:
-						del self.r_list[last]
-					i += 1
-				print("clearly removed")
+				self.clear("did_do_list.txt",input_number," finish ")
+
 
 	def update(self):
 		w_file = open("dolist.txt","w")
