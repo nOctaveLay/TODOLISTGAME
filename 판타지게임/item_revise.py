@@ -4,7 +4,6 @@ item = Item()
 # 	item.list[x]["type"] = item.pick_theme
 # item.update()
 while True:
-	print(item.list)
 	item.full_show_item()
 	a = input("0 ")
 	if a == "0":

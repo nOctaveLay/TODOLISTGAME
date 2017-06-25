@@ -154,8 +154,7 @@ class Item(PickUpTheme):
 
 	def item_list(self,filename,what):
 		if os.path.exists(filename) == 0:
-			file = open(filename,"w")
-			file.close()
+			open(filename,"w").close()
 		file = open(filename,"r")
 		for line in file:
 			line = line.strip("\n")

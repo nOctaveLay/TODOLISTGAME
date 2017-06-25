@@ -33,7 +33,7 @@ class Do(MustList):
 	def do_list(self):
 		if len(self.r_list) == 0 : print("<<Today's to do list is empty.>>")
 		for x in range(len(self.r_list)):
-			if self.r_list[x+1]['start_date'] == date.today().isoformat():
+			if self.r_list[x+1]['finish_date'] >= date.today().isoformat():
 				print(x+1,":",self.r_list[x+1]['name'],"finish_date:",self.r_list[x+1]['finish_date'])
 
 # if duration is ended, the work must be removed with demerit.
@@ -52,8 +52,9 @@ class Do(MustList):
 		return (count,not_clear_list)
 #rotate add
 	def add(self,work):
-		y,m,d = work['start_date']
-		dolist = MustList(work['name'],date.today(),rotate = work['rotate'],today_date = date(int(y),int(m),int(d))+timedelta(days = 1))
+		print(work['start_date'])
+		y,m,d = work['start_date'].split("-")
+		dolist = MustList(work['name'],date.today(),rotate = work['rotate'],start_date = (date(int(y),int(m),int(d))+timedelta(days = 1)).isoformat())
 
 #work add
 	def add_work(self):
